@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="从本地 COBBLEVERSE 整合包数据生成的宝可梦获取、进化与道具来源攻略。">
+  <title>COBBLEVERSE 宝可梦冒险指南</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="返回首页">
+      <span class="brand-ball" aria-hidden="true"><i></i></span>
+      <span><strong>COBBLEVERSE</strong><small>训练家冒险指南</small></span>
+    </a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav">菜单</button>
+    <nav id="main-nav" class="main-nav" aria-label="主导航">
+      <a href="#home" class="active">首页</a>
+      <a href="#route">开荒路线</a>
+      <a href="#pokedex">宝可梦图鉴</a>
+      <a href="#items">道具图鉴</a>
+      <a href="#systems">整合包内容</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero section-anchor">
+      <div class="hero-copy">
+        <p class="eyebrow">我的世界 1.21.1 · Fabric 加载器 · Cobblemon 1.7.3</p>
+        <h1>你的 COBBLEVERSE<br><span>冒险，从这里开始</span></h1>
+        <p class="hero-lead">这不是通用百科，而是直接读取你本地整合包的宝可梦、生成池、进化、配方、战利品与商店配置后生成的离线攻略。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#pokedex">打开宝可梦图鉴</a>
+          <a class="button secondary" href="#route">查看开荒路线</a>
+        </div>
+        <p class="data-note">数据以整合包内文件为准；世界种子、结构实际位置和服务器二次配置仍会影响结果。</p>
+      </div>
+      <div class="hero-art">
+        <div class="orb orb-one"></div><div class="orb orb-two"></div>
+        <div class="big-ball"><span></span></div>
+        <div class="pixel-spark s1">✦</div><div class="pixel-spark s2">✦</div><div class="pixel-spark s3">+</div>
+        <article class="featured-card" aria-hidden="false">
+          <button id="shuffle-featured" type="button">换一只</button>
+          <img id="featured-image" alt="">
+          <p>本次推荐</p>
+          <strong id="featured-name">正在读取图鉴…</strong>
+          <small id="featured-meta"></small>
+          <button id="open-featured" class="featured-open" type="button">查看获取方式</button>
+        </article>
+      </div>
+      <div class="stats-strip" id="stats-strip" aria-label="整合包数据概览"></div>
+    </section>
+
+    <section id="route" class="content-section section-anchor" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow red">训练家路线</p><h2>推荐开荒路线</h2></div>
+        <p>按这个顺序推进，能尽快建立治疗、捕捉、移动与仓储循环。</p>
+      </div>
+      <div class="route-grid">
+        <article class="route-card"><span class="step">01</span><div><h3>领取初始伙伴</h3><p>首次进入会弹出初始宝可梦选择。整合包配置提供历代御三家，以及 Pallet、Lumya、Cosplay 特殊组。</p><button class="text-button" data-action="show-starters">查看全部初始组 →</button></div></article>
+        <article class="route-card"><span class="step">02</span><div><h3>先做治疗机与精灵球</h3><p>用 REI 查询当前数据包配方。基础精灵球一次产出 4 个；治疗机需要铜、铁、红石材料与活力块相关材料。</p><button class="text-button" data-item="cobblemon:poke_ball">查看精灵球来源 →</button></div></article>
+        <article class="route-card"><span class="step">03</span><div><h3>建立探索网络</h3><p>利用 Xaero 小地图/世界地图标记村庄、宝可梦中心、巢穴和稀有生态域；Waystones 用于固定长途路线。</p></div></article>
+        <article class="route-card"><span class="step">04</span><div><h3>扩充捕捉与经济</h3><p>CobbleDollars 商店出售常用球、药品和卡片。捕捉率显示与指示器可帮助判断用球时机。</p><button class="text-button" data-action="shop-items">查看商店道具 →</button></div></article>
+        <article class="route-card"><span class="step">05</span><div><h3>培育、牧场与仓储</h3><p>Cobbreeding、Safe Pastures 与 Pasture Loot 组成培育/产出循环；背包、Tom's Storage 和高级仓储负责长期收集。</p></div></article>
+        <article class="route-card"><span class="step">06</span><div><h3>挑战巢穴与徽章内容</h3><p>队伍成型后推进 Raid Dens、Mega Showdown、传奇纪念碑和徽章系统。先准备属性克制、回复品与机动坐骑。</p></div></article>
+      </div>
+      <div id="starter-panel" class="starter-panel" hidden></div>
+    </section>
+
+    <section id="pokedex" class="dex-section section-anchor" hidden>
+      <div class="section-heading light">
+        <div><p class="eyebrow yellow">本地数据图鉴</p><h2>宝可梦获取与进化图鉴</h2></div>
+        <p>搜索中文名、英文名或全国图鉴编号。点击卡片查看完整生成条件、进化条件和掉落。</p>
+      </div>
+      <div class="filter-bar dark-filter">
+        <label class="search-box"><span>⌕</span><input id="pokemon-search" type="search" placeholder="搜索宝可梦、编号或生态域：皮卡丘 / 丛林" autocomplete="off"></label>
+        <label>属性<select id="type-filter"><option value="">全部属性</option></select></label>
+        <label>世代<select id="gen-filter"><option value="">全部世代</option></select></label>
+        <label>获取方式<select id="spawn-filter"><option value="">全部</option><option value="spawn">有野外生成数据</option><option value="evolution">可由进化获得</option><option value="special">无常规生成数据</option></select></label>
+        <button id="random-pokemon" class="filter-action" type="button">🎲 随机查看一只</button>
+      </div>
+      <p class="result-count" id="pokemon-count" aria-live="polite"></p>
+      <div id="pokemon-grid" class="pokemon-grid"></div>
+      <button id="pokemon-more" class="button more-button" type="button">加载更多</button>
+    </section>
+
+    <section id="items" class="content-section item-section section-anchor" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow red">道具查询器</p><h2>道具来源与配方</h2></div>
+        <p>覆盖语言文件中登记的方块/道具，并反查合成、商店、宝可梦掉落和战利品表。</p>
+      </div>
+      <div class="filter-bar">
+        <label class="search-box"><span>⌕</span><input id="item-search" type="search" placeholder="搜索道具名或 ID" autocomplete="off"></label>
+        <label>模组<select id="namespace-filter"><option value="">全部命名空间</option></select></label>
+        <label>来源<select id="source-filter"><option value="">全部道具</option><option value="known">有明确来源</option><option value="recipe">可合成</option><option value="shop">商店出售</option><option value="drop">宝可梦掉落</option><option value="loot">战利品表</option><option value="unknown">包内未检出来源</option></select></label>
+      </div>
+      <p class="result-count" id="item-count" aria-live="polite"></p>
+      <div id="item-list" class="item-list"></div>
+      <button id="item-more" class="button more-button light-more" type="button">加载更多</button>
+    </section>
+
+    <section id="systems" class="systems-section section-anchor" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow yellow">整合包内容</p><h2>这个文件夹里有什么</h2></div>
+        <p>按实际目录归纳。文件清单可展开查看，方便定位模组和资源包。</p>
+      </div>
+      <div class="system-grid">
+        <article><span>⚔</span><h3>宝可梦核心</h3><p>Cobblemon、战斗扩展、捕捉率显示、图鉴扫描、培育、骑乘、巢穴、Mega 与徽章。</p></article>
+        <article><span>⌖</span><h3>探索与世界</h3><p>Xaero 地图、Waystones、Repurposed Structures、传奇纪念碑、宝可梦中心与生态域替换。</p></article>
+        <article><span>▦</span><h3>生存与收集</h3><p>CobbleCuisine、CobbleDollars、牧场产出、背包、Tom's Storage、高级仓储与装饰家具。</p></article>
+        <article><span>✦</span><h3>画面与性能</h3><p>Sodium、Iris、Lithium、C2ME、ModernFix，以及专属资源包、音乐和两档光影预设。</p></article>
+      </div>
+      <div id="pack-lists" class="pack-lists"></div>
+      <aside class="notice"><strong>可选内容：</strong><code>datapacks/extra</code> 不会被默认强制加载，本网站没有把其中内容算作基础玩法。名为 “No Hunger” 与 “No Ender Dragon” 的顶层数据包位于强制目录，建新世界时应视为生效内容。</aside>
+    </section>
+  </main>
+
+  <footer><span class="mini-ball" aria-hidden="true"></span><p>COBBLEVERSE 本地图鉴 · 数据来自用户本地实例 · 生成日期 2026-08-27</p></footer>
+
+  <nav class="app-dock" aria-label="快捷切换">
+    <a href="#home">⌂<span>首页</span></a><a href="#route">➜<span>路线</span></a><a href="#pokedex">◉<span>图鉴</span></a><a href="#items">▣<span>道具</span></a><a href="#systems">☰<span>内容</span></a>
+  </nav>
+
+  <dialog id="detail-dialog">
+    <button class="dialog-close" type="button" aria-label="关闭">×</button>
+    <div id="dialog-content"></div>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
